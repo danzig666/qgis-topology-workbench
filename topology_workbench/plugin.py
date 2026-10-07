@@ -23,7 +23,7 @@ class TopologyWorkbenchPlugin:
         self.action = QAction(QIcon(str(Path(__file__).with_name("icon.svg"))), "Topology Workbench", self.iface.mainWindow())
         self.action.setToolTip(tr('Topology checks with searchable layer selection and export'))
         self.action.triggered.connect(self.show_dock)
-        self.iface.addPluginToVectorMenu("Topology Workbench", self.action)
+        self.iface.vectorMenu().addAction(self.action)
         self.iface.addToolBarIcon(self.action)
 
     def show_dock(self):
@@ -35,7 +35,7 @@ class TopologyWorkbenchPlugin:
 
     def unload(self):
         if self.action:
-            self.iface.removePluginVectorMenu("Topology Workbench", self.action)
+            self.iface.vectorMenu().removeAction(self.action)
             self.iface.removeToolBarIcon(self.action)
             self.action.deleteLater()
             self.action = None

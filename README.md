@@ -10,7 +10,7 @@ The screenshot shows the actual Qt plugin widgets and a QGIS map canvas with the
 
 ## Install
 
-1. Download **`topology_workbench-1.2.0.zip`** from the [release page](https://github.com/danzig666/qgis-topology-workbench/releases/latest).
+1. Download **`topology_workbench-1.2.1.zip`** from the [release page](https://github.com/danzig666/qgis-topology-workbench/releases/latest).
 2. In QGIS, open **Plugins → Manage and Install Plugins → Install from ZIP** and select that file.
 3. Enable **Topology Workbench** and open it from its toolbar icon or **Vector → Topology Workbench**.
 
@@ -66,7 +66,7 @@ The default limit is **10,000 issues**, adjustable to **100,000**. Up to **250,0
 
 ## Try the demo
 
-Download and extract **`topology_workbench-demo-1.2.0.zip`** from the release, or use the files in [`examples`](examples). Open `topology-demo.qgz` with `topology-demo.gpkg` beside it. Eight saved rules find **11 intentionally introduced issues**: duplicates, overlaps, an enclosed gap, dangling ends, coverage errors, a self-intersection and an empty geometry. The layer names are English; the plugin UI still follows your QGIS language.
+Download and extract **`topology_workbench-demo-1.2.1.zip`** from the release, or use the files in [`examples`](examples). Open `topology-demo.qgz` with `topology-demo.gpkg` beside it. Eight saved rules find **11 intentionally introduced issues**: duplicates, overlaps, an enclosed gap, dangling ends, coverage errors, a self-intersection and an empty geometry. The layer names are English; the plugin UI still follows your QGIS language.
 
 ## Development and verification
 

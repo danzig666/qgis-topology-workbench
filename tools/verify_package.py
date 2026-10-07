@@ -35,7 +35,10 @@ with tempfile.TemporaryDirectory(prefix="topology-package-") as folder:
     assert Path(sys.modules["topology_workbench"].__file__).resolve().is_relative_to(Path(folder).resolve())
     assert utils.startPlugin("topology_workbench")
     plugin = utils.plugins["topology_workbench"]
-    plugin.show_dock()
+    menu_action = plugin.action
+    assert menu_action in iface.vectorMenu().actions()
+    assert menu_action.menu() is None
+    menu_action.trigger()
     assert plugin.dock is not None
     from topology_workbench.i18n import language_for_locale
     expected = "Ellenőrzés indítása" if language_for_locale(bootstrap["TEST_LOCALE"]) == "hu" else "Run checks"
@@ -45,6 +48,7 @@ with tempfile.TemporaryDirectory(prefix="topology-package-") as folder:
     assert plugin.dock.model.headerData(6, Qt.Orientation.Horizontal) == expected_area
     APP.processEvents()
     assert utils.unloadPlugin("topology_workbench")
+    assert menu_action not in iface.vectorMenu().actions()
     iface.window.close()
     QgsProject.instance().clear()
     APP.processEvents()

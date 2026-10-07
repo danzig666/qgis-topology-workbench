@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 — 2026-10-07
+
+- Open Topology Workbench directly from the Vector menu, without a plugin submenu.
+- Remove the direct menu entry when the plugin is disabled.
+- Verify menu activation and cleanup in the packaged plugin on QGIS 3.44.9 and 4.2.2, in both languages.
+
 ## 1.2.0 — 2026-10-07
 
 - Show enclosed gap sizes in a sortable, localized Area (m²) column.

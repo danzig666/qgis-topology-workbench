@@ -1,11 +1,11 @@
 # Topology Workbench
 
-Önálló QGIS-bővítmény a topológiai hibák keresésére és feldolgozására, a QGIS felületi nyelvét követő angol és magyar felülettel. Telepíthető csomag: `topology_workbench-1.2.0.zip`, elérhető a [GitHub-kiadásoknál](https://github.com/danzig666/qgis-topology-workbench/releases). [English documentation](../README.md).
+Önálló QGIS-bővítmény a topológiai hibák keresésére és feldolgozására, a QGIS felületi nyelvét követő angol és magyar felülettel. Telepíthető csomag: `topology_workbench-1.2.1.zip`, elérhető a [GitHub-kiadásoknál](https://github.com/danzig666/qgis-topology-workbench/releases). [English documentation](../README.md).
 
 ## Telepítés
 
 1. QGIS → **Bővítmények → Bővítmények kezelése és telepítése → Telepítés ZIP-ből**.
-2. Válaszd a `topology_workbench-1.2.0.zip` fájlt, majd telepítsd és engedélyezd a **Topology Workbench** bővítményt.
+2. Válaszd a `topology_workbench-1.2.1.zip` fájlt, majd telepítsd és engedélyezd a **Topology Workbench** bővítményt.
 3. Nyisd meg az eszközt az eszköztári ikonról vagy a **Vektor → Topology Workbench** menüből.
 
 A plugin QGIS **3.44+ és 4.x** verziókra készült. Valódi QGIS **3.44.9 / Qt5** és **4.2.2 / Qt6** környezetben ellenőrizve. Külső Python-csomagot nem kell telepíteni. A későbbi QGIS-verziók API-változásai további ellenőrzést igényelhetnek.

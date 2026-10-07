@@ -44,6 +44,7 @@ APP.setTranslation(TEST_LOCALE)
 class FakeIface:
     def __init__(self):
         self.window = QMainWindow()
+        self.vector_menu = self.window.menuBar().addMenu("Vector")
         self.canvas = QgsMapCanvas(self.window)
         self.canvas.setDestinationCrs(QgsCoordinateReferenceSystem("EPSG:3857"))
         self.canvas.setExtent(QgsRectangle(-2, -2, 12, 12))
@@ -65,11 +66,8 @@ class FakeIface:
     def removeDockWidget(self, dock):
         self.window.removeDockWidget(dock)
 
-    def addPluginToVectorMenu(self, *args):
-        pass
-
-    def removePluginVectorMenu(self, *args):
-        pass
+    def vectorMenu(self):
+        return self.vector_menu
 
     def addToolBarIcon(self, *args):
         pass
