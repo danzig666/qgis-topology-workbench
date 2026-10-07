@@ -1,0 +1,27 @@
+name: Build plugin packages
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit source syntax and translations
+        run: python tools/audit_translations.py
+      - name: Build install and demo packages
+        run: python tools/package_plugin.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: topology-workbench-packages
+          path: dist/*
+          if-no-files-found: error

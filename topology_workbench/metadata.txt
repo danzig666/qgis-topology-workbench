@@ -1,0 +1,17 @@
+[general]
+name=Topology Workbench
+description=Searchable layer selection, background topology checks and exportable issues.
+description[hu]=Kereshető rétegválasztás, háttérellenőrzés és exportálható topológiai hibák.
+about=Topology workbench with saved rules, map highlighting, CSV and GeoPackage export. English and Hungarian interfaces follow the QGIS language. Supports QGIS 3 and Qt6-based QGIS 4.
+about[hu]=Topológiai munkafelület: menthető szabályok, térképi kiemelés, CSV és GeoPackage export. A felület a QGIS nyelvét követi, angolul vagy magyarul. QGIS 3 és Qt6 alapú QGIS 4 támogatás.
+version=1.1.0
+qgisMinimumVersion=3.44
+qgisMaximumVersion=4.99
+author=Topology Workbench contributors
+email=
+category=Vector
+icon=icon.svg
+experimental=False
+deprecated=False
+hasProcessingProvider=False
+supportsQt6=True

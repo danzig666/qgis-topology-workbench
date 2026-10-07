@@ -1,0 +1,86 @@
+{
+  "format": "topology-workbench",
+  "version": 1,
+  "rules": [
+    {
+      "kind": "valid",
+      "layer_id": "Parcels_74c2563e_faa8_4632_8c91_dbc041d69f76",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "82ca71c0e9a74e689d3dea1a312a115c",
+      "layer_name": "Parcels",
+      "reference_name": ""
+    },
+    {
+      "kind": "duplicates",
+      "layer_id": "Parcels_74c2563e_faa8_4632_8c91_dbc041d69f76",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "868a7655c93b46ceb76f7acc189779f9",
+      "layer_name": "Parcels",
+      "reference_name": ""
+    },
+    {
+      "kind": "overlap",
+      "layer_id": "Parcels_74c2563e_faa8_4632_8c91_dbc041d69f76",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "7a2132ce6a964111a128c184456aa2a8",
+      "layer_name": "Parcels",
+      "reference_name": ""
+    },
+    {
+      "kind": "gaps",
+      "layer_id": "Parcels_74c2563e_faa8_4632_8c91_dbc041d69f76",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "a0943148faba465a8e2afa8d12e7ff61",
+      "layer_name": "Parcels",
+      "reference_name": ""
+    },
+    {
+      "kind": "dangles",
+      "layer_id": "Roads_dd2e291a_672f_4444_b574_9507b81f75ce",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "660e9b6bf4974f41b6f08a5528afaba2",
+      "layer_name": "Roads",
+      "reference_name": ""
+    },
+    {
+      "kind": "covered",
+      "layer_id": "Points_c318912e_700c_4cf3_8d06_65ca632b5939",
+      "reference_id": "Parcels_74c2563e_faa8_4632_8c91_dbc041d69f76",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "ad9298e31973432abdc5aa9204e13099",
+      "layer_name": "Points",
+      "reference_name": "Parcels"
+    },
+    {
+      "kind": "valid",
+      "layer_id": "Invalid___empty_59defb7a_0231_4cae_a76c_266ffacf7167",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "b39d85b93a634d88be1bb09280bf78fc",
+      "layer_name": "Invalid / empty",
+      "reference_name": ""
+    },
+    {
+      "kind": "empty",
+      "layer_id": "Invalid___empty_59defb7a_0231_4cae_a76c_266ffacf7167",
+      "reference_id": "",
+      "tolerance": 0.0,
+      "enabled": true,
+      "id": "28ab87d8811c4c2aa2caa18f33b70ac7",
+      "layer_name": "Invalid / empty",
+      "reference_name": ""
+    }
+  ]
+}
