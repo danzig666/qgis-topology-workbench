@@ -18,13 +18,16 @@ with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED) as arch
             continue
         item = zipfile.ZipInfo(source.relative_to(ROOT).as_posix(), date_time=(2026, 10, 7, 0, 0, 0))
         item.compress_type = zipfile.ZIP_DEFLATED
-        item.external_attr = 0o644 << 16
+        item.create_system = 3
+        item.external_attr = 0o100644 << 16
         archive.writestr(item, source.read_bytes())
     for filename in ("README.md", "LICENSE", "CHANGELOG.md", "docs/README.hu.md",
                      "docs/images/workbench-en.png", "docs/images/layer-lookup-en.png"):
         source = ROOT / filename
         item = zipfile.ZipInfo(f"topology_workbench/{filename}", date_time=(2026, 10, 7, 0, 0, 0))
         item.compress_type = zipfile.ZIP_DEFLATED
+        item.create_system = 3
+        item.external_attr = 0o100644 << 16
         archive.writestr(item, source.read_bytes())
 with zipfile.ZipFile(destination) as archive:
     assert archive.testzip() is None
@@ -41,6 +44,8 @@ with zipfile.ZipFile(demo, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             continue
         item = zipfile.ZipInfo(source.name, date_time=(2026, 10, 7, 0, 0, 0))
         item.compress_type = zipfile.ZIP_DEFLATED
+        item.create_system = 3
+        item.external_attr = 0o100644 << 16
         archive.writestr(item, source.read_bytes())
 demo_digest = hashlib.sha256(demo.read_bytes()).hexdigest()
 demo.with_suffix(".zip.sha256").write_text(f"{demo_digest}  {demo.name}\n", encoding="ascii")
