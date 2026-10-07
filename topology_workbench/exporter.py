@@ -15,7 +15,7 @@ from .models import RULES
 
 COLUMNS = ("error_id", "rule_id", "rule", "layer_id", "layer", "feature_id",
            "reference_layer_id", "reference_layer", "reference_feature_id", "message",
-           "source_crs", "source_wkt", "run_complete", "run_stale", "run_scope", "run_started_utc", "run_warnings")
+           "source_crs", "source_wkt", "run_complete", "run_stale", "run_scope", "run_started_utc", "run_warnings", "area_m2")
 
 
 def record(issue, number, report):
@@ -24,7 +24,7 @@ def record(issue, number, report):
             issue.reference_name, "" if issue.reference_feature_id is None else str(issue.reference_feature_id),
             issue.message, issue.crs.authid() or issue.crs.toWkt(), issue.geometry.asWkt(),
             "true" if report.complete else "false", "true" if report.stale else "false", report.scope, report.started_at,
-            " | ".join(report.warnings))
+            " | ".join(report.warnings), issue.area_m2)
 
 
 def export_csv(path, issues, report):
@@ -82,7 +82,8 @@ def issue_layers(issues, report, destination_crs, context):
             if kind not in groups:
                 layer = QgsVectorLayer(kind, f"topology_{kind.lower()}", "memory")
                 layer.setCrs(destination_crs)
-                fields = [QgsField(name, QVariant.Int if name == "error_id" else QVariant.String) for name in COLUMNS]
+                types = {"error_id": QVariant.Int, "area_m2": QVariant.Double}
+                fields = [QgsField(name, types.get(name, QVariant.String)) for name in COLUMNS]
                 if not layer.dataProvider().addAttributes(fields):
                     raise RuntimeError(tr('Could not create the export fields.'))
                 layer.updateFields()

@@ -10,6 +10,7 @@ from qgis.core import (
 )
 
 from .models import Issue, Report, RULES
+from .measurements import gap_area_m2
 
 
 @dataclass
@@ -140,6 +141,7 @@ class TopologyEngine:
             rule.id, rule.kind, snapshot.id, snapshot.name, fid, message,
             QgsGeometry(geometry), QgsCoordinateReferenceSystem(snapshot.crs),
             other.id if other else "", other.name if other else "", other_fid,
+            gap_area_m2(geometry, snapshot.crs, self.context) if rule.kind == "gaps" else None,
         ))
 
     def run(self):

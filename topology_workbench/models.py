@@ -101,6 +101,7 @@ class Issue:
     reference_id: str = ""
     reference_name: str = ""
     reference_feature_id: object = None
+    area_m2: object = None
 
 
 @dataclass

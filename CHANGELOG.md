@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 — 2026-10-07
+
+- Show enclosed gap sizes in a sortable, localized Area (m²) column.
+- Convert projected CRS units to square metres; measure geographic CRS gaps on their ellipsoid.
+- Preserve numeric `area_m2` values in CSV, GeoPackage and temporary layers, including when reprojecting exports.
+- Refresh the English screenshot to show a selected 40,000 m² gap.
+- Verify 48 integration tests in each English/Hungarian and QGIS 3.44.9/4.2.2 combination.
+
 ## 1.1.0 — 2026-10-07
 
 - Follow the QGIS interface language: English or Hungarian, with English fallback for other languages.

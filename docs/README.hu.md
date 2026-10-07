@@ -1,11 +1,11 @@
 # Topology Workbench
 
-Önálló QGIS-bővítmény a topológiai hibák keresésére és feldolgozására, a QGIS felületi nyelvét követő angol és magyar felülettel. Telepíthető csomag: `topology_workbench-1.1.0.zip`, elérhető a [GitHub-kiadásoknál](https://github.com/danzig666/qgis-topology-workbench/releases). [English documentation](../README.md).
+Önálló QGIS-bővítmény a topológiai hibák keresésére és feldolgozására, a QGIS felületi nyelvét követő angol és magyar felülettel. Telepíthető csomag: `topology_workbench-1.2.0.zip`, elérhető a [GitHub-kiadásoknál](https://github.com/danzig666/qgis-topology-workbench/releases). [English documentation](../README.md).
 
 ## Telepítés
 
 1. QGIS → **Bővítmények → Bővítmények kezelése és telepítése → Telepítés ZIP-ből**.
-2. Válaszd a `topology_workbench-1.1.0.zip` fájlt, majd telepítsd és engedélyezd a **Topology Workbench** bővítményt.
+2. Válaszd a `topology_workbench-1.2.0.zip` fájlt, majd telepítsd és engedélyezd a **Topology Workbench** bővítményt.
 3. Nyisd meg az eszközt az eszköztári ikonról vagy a **Vektor → Topology Workbench** menüből.
 
 A plugin QGIS **3.44+ és 4.x** verziókra készült. Valódi QGIS **3.44.9 / Qt5** és **4.2.2 / Qt6** környezetben ellenőrizve. Külső Python-csomagot nem kell telepíteni. A későbbi QGIS-verziók API-változásai további ellenőrzést igényelhetnek.
@@ -46,6 +46,8 @@ A vonalvégek toleranciája a **forrásréteg CRS-ének egységében** értendő
 
 Az ideiglenes hibarétegek memóriarétegek. Tartós tároláshoz exportáld őket GeoPackage-be.
 
+**Hézag mérete:** a belső hézagok területe a **Terület (m²)** oszlopban látható; a fejlécére kattintva számszerűen rendezhető, így a legnagyobb hézagok könnyen megtalálhatók. Vetületi rétegeknél a forrás CRS síkbeli területét számítjuk át négyzetméterre, láb egység esetén is. Földrajzi rétegeknél a forrás CRS ellipszoidján mérünk. Az érték független a térkép CRS-étől és a projekt mérési beállításaitól. A CSV, a GeoPackage és az ideiglenes hibarétegek az `area_m2` mezőben őrzik meg a számszerű értéket akkor is, ha az export geometriája más CRS-be kerül. Más hibatípusoknál a mező üres. A nagyon kis hézagok mérete sem kerekedik nullára.
+
 ## Futás és mérethatárok
 
 A számítás megszakítható QGIS-háttérfeladat. A főszálon készített, saját tulajdonú `QgsVectorLayerFeatureSource` pillanatképekből dolgozik; a háttérszál nem használ élő projektet, térképi felületet vagy rétegobjektumot. Térbeli index csökkenti az elem-összehasonlítások számát. A kiválasztott forrásrétegek teljes geometriai környezetét beolvassa, ezért a kijelöléses vizsgálat is használhat jelentős memóriát.
@@ -70,7 +72,7 @@ python .\tools\package_plugin.py
 
 A `tests/test_qgis.py` valódi PyQGIS/GEOS-integrációs teszteket futtat, a háttérfeladatot és a Qt-felületet is beleértve. A `tools/build_demo.py` a QGIS Pythonjával újragenerálja a mintaprojektet és a felület ellenőrzésére szolgáló képernyőképeket. A csomagolás nem igényel QGIS-t, és nem tartalmaz gyorsítótárakat vagy tesztfájlokat.
 
-Verziónként 43 teszt, angol és magyar felülettel is ellenőrizve. A PowerShell-indító alapértelmezésben mindkét nyelvet teszteli; a `-Language en_US` vagy `-Language hu_HU` kapcsoló egy nyelvre szűkíti a futást. A `tools/verify_package.py` a kész ZIP-et a QGIS valódi bővítménybetöltőjével, ideiglenes mappában ellenőrzi, a felhasználói bővítményprofil módosítása nélkül.
+Verziónként 48 teszt, angol és magyar felülettel is ellenőrizve. A PowerShell-indító alapértelmezésben mindkét nyelvet teszteli; a `-Language en_US` vagy `-Language hu_HU` kapcsoló egy nyelvre szűkíti a futást. A `tools/verify_package.py` a kész ZIP-et a QGIS valódi bővítménybetöltőjével, ideiglenes mappában ellenőrzi, a felhasználói bővítményprofil módosítása nélkül.
 
 API-források: [QGIS háttérfeladatok](https://docs.qgis.org/3.44/en/docs/pyqgis_developer_cookbook/tasks.html), [rétegválasztó](https://api.qgis.org/api/classQgsMapLayerComboBox.html), [geometriaműveletek](https://api.qgis.org/api/classQgsGeometry.html), [vektorfájl-export](https://api.qgis.org/api/classQgsVectorFileWriter.html).
 

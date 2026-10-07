@@ -1,15 +1,16 @@
-from .i18n import tr
-from qgis.PyQt.QtCore import QAbstractTableModel, QModelIndex, QSortFilterProxyModel, Qt
+from .i18n import qgis_locale, tr
+from qgis.PyQt.QtCore import QAbstractTableModel, QLocale, QModelIndex, QSortFilterProxyModel, Qt
 from .compat import USER_ROLE
 from .models import RULES
 
 
 class IssueModel(QAbstractTableModel):
-    HEADERS = ("#", 'Rule', 'Layer', 'Feature ID', 'Other layer / feature', 'Issue description')
+    HEADERS = ("#", 'Rule', 'Layer', 'Feature ID', 'Other layer / feature', 'Issue description', 'Area (m²)')
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.issues = []
+        self.locale = QLocale(qgis_locale())
 
     def replace(self, issues):
         self.beginResetModel()
@@ -28,7 +29,12 @@ class IssueModel(QAbstractTableModel):
         issue = self.issues[index.row()]
         if role == USER_ROLE:
             return issue
-        if role in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.ToolTipRole):
+        if index.column() == 6:
+            if role in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.ToolTipRole):
+                return "—" if issue.area_m2 is None else self.locale.toString(issue.area_m2, "g", 10)
+            if role == Qt.ItemDataRole.TextAlignmentRole:
+                return Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        if index.column() != 6 and role in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.ToolTipRole):
             other = issue.reference_name
             if issue.reference_feature_id is not None:
                 other += f" / {issue.reference_feature_id}"
@@ -47,6 +53,13 @@ class IssueFilter(QSortFilterProxyModel):
         super().__init__(parent)
         self.query = ""
         self.kind = ""
+
+    def lessThan(self, left, right):
+        if left.column() == 6:
+            issues = self.sourceModel().issues
+            a, b = issues[left.row()].area_m2, issues[right.row()].area_m2
+            return (-1 if a is None else a) < (-1 if b is None else b)
+        return super().lessThan(left, right)
 
     def set_query(self, query):
         self.query = query.casefold().strip()

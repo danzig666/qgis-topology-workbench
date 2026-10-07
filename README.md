@@ -10,7 +10,7 @@ The screenshot shows the actual Qt plugin widgets and a QGIS map canvas with the
 
 ## Install
 
-1. Download **`topology_workbench-1.1.0.zip`** from the [release page](https://github.com/danzig666/qgis-topology-workbench/releases/latest).
+1. Download **`topology_workbench-1.2.0.zip`** from the [release page](https://github.com/danzig666/qgis-topology-workbench/releases/latest).
 2. In QGIS, open **Plugins → Manage and Install Plugins → Install from ZIP** and select that file.
 3. Enable **Topology Workbench** and open it from its toolbar icon or **Vector → Topology Workbench**.
 
@@ -58,13 +58,15 @@ Controls, rule titles/descriptions, plugin validation errors, status messages an
 
 **Temporary issue layers** are memory layers; export them to GeoPackage for permanent storage.
 
+**Gap size:** enclosed gaps have an **Area (m²)** column; click its header to sort numerically and find the largest gaps. Projected layers use planar area in their source CRS, converted to square metres (including feet). Geographic layers use ellipsoidal area on the source CRS ellipsoid. This is independent of the current map CRS and project measurement settings. CSV, GeoPackage and temporary issue layers preserve the numeric value as `area_m2`, even when exporting geometries to another CRS. Other issue types leave this field empty. Very small gaps remain visible using significant digits.
+
 Checks run as cancellable QGIS tasks, using owned feature-source snapshots captured on the main thread and spatial indexes for comparisons. The worker does not access live layers, the project or UI widgets. It reads the entire comparison context, even for selected-feature checks.
 
 The default limit is **10,000 issues**, adjustable to **100,000**. Up to **250,000 features per layer** can be read. Reaching a limit, cancellation, failed transforms or skipped invalid geometry produces visibly **incomplete results**, also recorded in exports. Cancellation takes effect after an ongoing GEOS operation finishes. Geometry repairs are performed with QGIS editing tools.
 
 ## Try the demo
 
-Download and extract **`topology_workbench-demo-1.1.0.zip`** from the release, or use the files in [`examples`](examples). Open `topology-demo.qgz` with `topology-demo.gpkg` beside it. Eight saved rules find **11 intentionally introduced issues**: duplicates, overlaps, an enclosed gap, dangling ends, coverage errors, a self-intersection and an empty geometry. The layer names are English; the plugin UI still follows your QGIS language.
+Download and extract **`topology_workbench-demo-1.2.0.zip`** from the release, or use the files in [`examples`](examples). Open `topology-demo.qgz` with `topology-demo.gpkg` beside it. Eight saved rules find **11 intentionally introduced issues**: duplicates, overlaps, an enclosed gap, dangling ends, coverage errors, a self-intersection and an empty geometry. The layer names are English; the plugin UI still follows your QGIS language.
 
 ## Development and verification
 
@@ -79,7 +81,7 @@ python .\tools\package_plugin.py
 
 The PowerShell runner tests both languages by default; use `-Language en_US` or `-Language hu_HU` for one. On Linux/macOS, run `tests/test_qgis.py` using a configured PyQGIS Python environment and set `TOPOLOGY_TEST_LANGUAGE` to the language to test.
 
-The **43 integration tests** exercise real PyQGIS/GEOS operations, background tasks, widgets, locale detection, translation coverage, placeholder preservation, exports and translator cleanup. They pass for both languages on both tested QGIS versions (**172 test executions**). Run `tools/verify_package.py` with QGIS's Python to load the packaged ZIP through QGIS's real plugin loader in an isolated directory. The same `TOPOLOGY_TEST_LANGUAGE` variable controls package-language verification.
+The **48 integration tests** exercise real PyQGIS/GEOS operations, background tasks, widgets, locale detection, translation coverage, placeholder preservation, exports and translator cleanup. They pass for both languages on both tested QGIS versions (**192 test executions**). Run `tools/verify_package.py` with QGIS's Python to load the packaged ZIP through QGIS's real plugin loader in an isolated directory. The same `TOPOLOGY_TEST_LANGUAGE` variable controls package-language verification.
 
 `tools/build_demo.py` regenerates the sample project and actual widget screenshots using QGIS's Python. `tools/package_plugin.py` creates deterministic install/demo ZIPs with SHA-256 checksums using ordinary Python. The GitHub build workflow performs source/translation audits and creates packages; QGIS integration testing is a separate runtime check, not claimed by the package-build workflow.
 

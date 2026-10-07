@@ -181,6 +181,7 @@ class WorkbenchDock(QDockWidget):
         self.table.setColumnWidth(2, 120)
         self.table.setColumnWidth(3, 100)
         self.table.setColumnWidth(4, 180)
+        self.table.setColumnWidth(6, 120)
         self.table.doubleClicked.connect(lambda index: self.zoom_issue())
         self.table.selectionModel().selectionChanged.connect(self.highlight_selected)
         layout.addWidget(self.table, 1)

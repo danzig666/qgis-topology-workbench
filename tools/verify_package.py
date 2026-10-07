@@ -40,6 +40,9 @@ with tempfile.TemporaryDirectory(prefix="topology-package-") as folder:
     from topology_workbench.i18n import language_for_locale
     expected = "Ellenőrzés indítása" if language_for_locale(bootstrap["TEST_LOCALE"]) == "hu" else "Run checks"
     assert plugin.dock.run_button.text() == expected
+    from qgis.PyQt.QtCore import Qt
+    expected_area = "Terület (m²)" if language_for_locale(bootstrap["TEST_LOCALE"]) == "hu" else "Area (m²)"
+    assert plugin.dock.model.headerData(6, Qt.Orientation.Horizontal) == expected_area
     APP.processEvents()
     assert utils.unloadPlugin("topology_workbench")
     iface.window.close()

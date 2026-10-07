@@ -156,5 +156,7 @@
   "{0}: {1} invalid geometries were skipped in spatial comparisons. Run the Valid geometry rule.": "{0}: {1} érvénytelen geometria kimaradt a térbeli összehasonlításból. Futtasd az Érvényes geometria szabályt.",
   "← Previous": "← Előző",
   "⚠ Rules or layer geometries have changed. These results reflect an earlier snapshot; run the checks again.": "⚠ A szabályok vagy a réteg geometriái megváltoztak. Az eredmény korábbi állapotot mutat; futtasd újra az ellenőrzést.",
-  "⚠ {0} (missing)": "⚠ {0} (hiányzik)"
+  "⚠ {0} (missing)": "⚠ {0} (hiányzik)",
+  "Area (m²)": "Terület (m²)",
+  "Could not measure the gap area in square metres.": "A hézag területe nem mérhető négyzetméterben."
 }

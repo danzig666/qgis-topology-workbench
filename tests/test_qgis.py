@@ -33,7 +33,7 @@ from topology_workbench.i18n import (
     CONTEXT, PluginTranslation, hungarian_catalog, language_for_locale, qgis_locale, tr,
 )
 from topology_workbench.models import DEFINITIONS, RULES
-from topology_workbench.results import IssueModel
+from topology_workbench.results import IssueModel, IssueFilter
 
 APP = QgsApplication([], True)
 APP.initQgis()
@@ -172,7 +172,72 @@ class QgisTests(unittest.TestCase):
         report = self.run_rule("gaps", self.frame())
         self.assert_count(report, 1)
         self.assertAlmostEqual(report.issues[0].geometry.area(), 4)
+        self.assertAlmostEqual(report.issues[0].area_m2, 4)
         self.assertIsNone(report.issues[0].feature_id)
+
+    def test_gap_area_survey_feet_to_square_metres(self):
+        layer = self.frame()
+        layer.setCrs(QgsCoordinateReferenceSystem("EPSG:2263"))
+        report = self.run_rule("gaps", layer)
+        self.assert_count(report, 1)
+        self.assertAlmostEqual(report.issues[0].area_m2, 4 * (1200 / 3937) ** 2, places=6)
+
+    def test_gap_area_geographic_latitude_changes_measurement(self):
+        areas = []
+        for latitude in (0, 60):
+            ring = f"POLYGON((0 {latitude},4 {latitude},4 {latitude+4},0 {latitude+4},0 {latitude})," \
+                   f"(1 {latitude+1},1 {latitude+3},3 {latitude+3},3 {latitude+1},1 {latitude+1}))"
+            layer = self.layer("Polygon", [ring], crs="EPSG:4326")
+            report = self.run_rule("gaps", layer)
+            self.assert_count(report, 1)
+            areas.append(report.issues[0].area_m2)
+        self.assertGreater(areas[0], 49e9)
+        self.assertLess(areas[0], 50e9)
+        self.assertGreater(areas[1] / areas[0], 0.45)
+        self.assertLess(areas[1] / areas[0], 0.50)
+
+    def test_gap_area_numeric_sort_and_small_value_display(self):
+        issue = self.run_rule("gaps", self.frame()).issues[0]
+        from dataclasses import replace
+        model = IssueModel()
+        model.replace([replace(issue, area_m2=value) for value in (10.0, 2.0, None, 0.000001)])
+        proxy = IssueFilter()
+        proxy.setSourceModel(model)
+        proxy.sort(6, Qt.SortOrder.AscendingOrder)
+        self.assertEqual([item.area_m2 for item in proxy.visible_issues()], [None, 0.000001, 2.0, 10.0])
+        proxy.sort(6, Qt.SortOrder.DescendingOrder)
+        self.assertEqual([item.area_m2 for item in proxy.visible_issues()], [10.0, 2.0, 0.000001, None])
+        displayed = model.index(3, 6).data()
+        value, ok = model.locale.toDouble(displayed)
+        self.assertTrue(ok)
+        self.assertAlmostEqual(value, 0.000001, places=12)
+        self.assertEqual(model.index(2, 6).data(), "—")
+
+    def test_gap_area_csv_and_geopackage_remain_numeric_after_reprojection(self):
+        report = self.run_rule("gaps", self.frame())
+        with tempfile.TemporaryDirectory() as folder:
+            csv_path = Path(folder) / "gaps.csv"
+            export_csv(csv_path, report.issues, report)
+            with csv_path.open(encoding="utf-8-sig", newline="") as stream:
+                row = next(csv.DictReader(stream, delimiter=";"))
+            self.assertEqual(float(row["area_m2"]), 4.0)
+            gpkg_path = Path(folder) / "gaps.gpkg"
+            export_geopackage(gpkg_path, report.issues, report,
+                             QgsCoordinateReferenceSystem("EPSG:4326"), self.project.transformContext())
+            dataset = ogr.Open(str(gpkg_path))
+            layer = dataset.GetLayerByName("topology_multipolygon")
+            field = layer.GetLayerDefn().GetFieldDefn(layer.GetLayerDefn().GetFieldIndex("area_m2"))
+            self.assertEqual(field.GetType(), ogr.OFTReal)
+            feature = layer.GetNextFeature()
+            self.assertEqual(feature.GetField("area_m2"), 4.0)
+            self.assertLess(feature.GetGeometryRef().GetArea(), 1e-8)
+            feature = field = layer = dataset = None
+
+    def test_non_gap_area_exports_as_null(self):
+        report = self.run_rule("duplicates", self.layer("Point", ["POINT(0 0)"] * 2))
+        self.assertIsNone(report.issues[0].area_m2)
+        layers = issue_layers(report.issues, report, self.project.crs(), self.project.transformContext())
+        self.assertEqual(next(layers[0].getFeatures())["area_m2"], None)
 
     def test_open_gap_not_enclosed(self):
         layer = self.layer("Polygon", [rectangle(0, 0, 4, 1), rectangle(0, 3, 4, 4), rectangle(0, 1, 1, 3)])
@@ -481,6 +546,7 @@ class QgisTests(unittest.TestCase):
         self.assertEqual(dock.scope.itemText(0), "Teljes réteg" if hungarian else "Entire layer")
         self.assertEqual(dock.rule_table.horizontalHeaderItem(1).text(), "Szabály" if hungarian else "Rule")
         self.assertEqual(dock.model.headerData(2, Qt.Orientation.Horizontal), "Réteg" if hungarian else "Layer")
+        self.assertEqual(dock.model.headerData(6, Qt.Orientation.Horizontal), "Terület (m²)" if hungarian else "Area (m²)")
         dialog = RuleDialog(self.project, dock)
         self.assertEqual(dialog.windowTitle(), "Új ellenőrzési szabály" if hungarian else "New check rule")
         self.assertIn("Gépelj" if hungarian else "Type", dialog.source.lineEdit().placeholderText())
